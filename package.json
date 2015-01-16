@@ -1,0 +1,24 @@
+{
+  "name": "todoGun",
+  "version": "1.0.0",
+  "description": "A simple todo app using GunDB",
+  "main": "server.js",
+  "scripts": {
+    "start": "npm install && node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github"
+  },
+  "keywords": [
+    "todo",
+    "example",
+    "gundb"
+  ],
+  "author": "Forrest Tait",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.11.0",
+    "gun": "0.0.9-c"
+  }
+}

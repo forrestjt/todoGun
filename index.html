@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ToDo Example</title>
+  </head>
+  <body onload="start()">
+    <h2>ToDo Example</h2>
+
+    <input type="text" id="todoItem" /> <button id="addToDo">Add</button>
+    <ul id="todos"></ul>
+
+    <script src="node_modules/gun/gun.js"></script>
+    <script>
+      function randomId(){
+        return ''+(new Date()).getTime()+Math.round((Math.random()*1000));
+      }
+      function start(){
+        var $ = document.querySelector.bind(document);
+        var todoStore = Gun('http://localhost:8080/gun').load('todo/data');
+        todoStore.on(renderToDo);
+        $("#addToDo").onclick = function(){
+          console.log("Add");
+          var id = randomId();
+          todoStore.path(id).set($("#todoItem").value);
+          $("#todos").innerHTML += "<li>"+$("#todoItem").value+"</li>";
+          $("#todoItem").value = "";
+        };
+        function renderToDo(val){
+          //console.log("todoStore.get",val);
+          var todoHTML = '';
+          for(key in val) {
+            if(key == '_' || !val[key]) continue;
+            todoHTML += '<li style="width:400px;height:2em;">'+val[key]+
+              '<button style="float:right;" onclick=removeToDo("'+key+'")>X</button></li>';
+          }
+          $("#todos").innerHTML = todoHTML;
+        };
+        window.removeToDo = function(id){
+          todoStore.path(id).set(null);
+          todoStore.get(renderToDo);
+        }
+      }
+    </script>
+  </body>
+</html>
